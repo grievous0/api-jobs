@@ -1,6 +1,6 @@
 # API Jobs
 ## Description
-This is a simple API to manage jobs. It is possible to create, update, delete and list jobs.
+This is a simple API to manage jobs. It is possible to create, update, delete and list jobs, candidates and companies.
 Built with Typescript, Express and Sequelize.
 
 ## Dependencies
@@ -24,12 +24,14 @@ npm install
 
 ### 3. Create a database
 ```bash
-TBD
+psql postgres
+CREATE USER usuario WITH ENCRYPTED PASSWORD 'senha' CREATEDB;
 ```
 
-### 4. Run migrations
+### 4. Run migrations and seeds
 ```bash
-TBD
+npx sequelize-cli db:migrate
+npx sequelize-cli db:seed:all
 ```
 
 ### 5. Run the project
