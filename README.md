@@ -25,7 +25,7 @@ npm install
 ### 3. Create a database
 ```bash
 psql postgres
-CREATE USER usuario WITH ENCRYPTED PASSWORD 'senha' CREATEDB;
+CREATE USER user_name WITH ENCRYPTED PASSWORD 'password' CREATEDB;
 ```
 
 ### 4. Run migrations and seeds
@@ -36,5 +36,5 @@ npx sequelize-cli db:seed:all
 
 ### 5. Run the project
 ```bash
-npm run dev
+npm run start
 ```

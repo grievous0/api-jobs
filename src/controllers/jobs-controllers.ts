@@ -14,5 +14,93 @@ export const jobsControllers = {
                 })
             }
         }
+    },
+
+    //POST /jobs
+    save: async (req: Request, res: Response) => {
+        const { title, description, limitDate, companyId } = req.body;
+        try {
+            const job = await Job.create({
+                title,
+                description,
+                limitDate,
+                companyId
+            })
+
+            return res.status(201).json(job);
+        } catch (error) {
+            if (error instanceof Error) {
+                return res.status(400).json({
+                    error: error.message
+                })
+            }
+        }
+    },
+
+    //GET /jobs/:id
+    show: async (req: Request, res: Response) => {
+        const { id } = req.params;
+        try {
+            const job = await Job.findByPk(id, { include: 'company' });
+            if (job) {
+                return res.json(job);
+            }
+            return res.status(404).json({
+                error: 'Job not found'
+            })
+        } catch (error) {
+            if (error instanceof Error) {
+                return res.status(400).json({
+                    error: error.message
+                })
+            }
+        }
+    },
+
+    //PUT /jobs/:id
+    update: async (req: Request, res: Response) => {
+        const { id } = req.params;
+        const { title, description, limitDate, companyId } = req.body;
+        try {
+            const job = await Job.findByPk(id);
+            if(job){
+                const [affectedRows, jobs] = await Job.update({
+                    title,
+                    description,
+                    limitDate,
+                    companyId
+                }, {
+                    where: { id },
+                    returning: true
+                })
+
+                res.status(200).json(jobs[0]);
+            }
+
+            return res.status(404).json({
+                error: 'Job not found'
+            })
+        } catch (error) {
+            if (error instanceof Error) {
+                return res.status(400).json({
+                    error: error.message
+                })
+            }
+        }
+    },
+
+    //DELETE /jobs/:id
+    delete: async (req: Request, res: Response) => {
+        const { id } = req.params;
+        try {
+            await Job.destroy({ where: { id } });
+            return res.status(204).send();
+        } catch (error) {
+            if (error instanceof Error) {
+                return res.status(400).json({
+                    error: error.message
+                })
+            }
+        }
     }
 }
